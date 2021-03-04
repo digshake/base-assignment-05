@@ -20,7 +20,7 @@ public class DrawEntities {
 		boolean[] areZombies = { false };
 		double[][] positions = { { 0.33, 0.67 } };
 		String message = String.format(
-				"<html>Does the screen show a single red dot at (%.2f, %.2f)?<br/>Note: we have added crosshairs at this location.</html>",
+				"<html>Does the screen show a single black dot at (%.2f, %.2f)?<br/>Note: we have added crosshairs at this location.</html>",
 				positions[0][0], positions[0][1]);
 		return new DrawEntitiesCase(areZombies, positions, message);
 	}
