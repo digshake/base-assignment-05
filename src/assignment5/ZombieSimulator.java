@@ -81,9 +81,10 @@ public class ZombieSimulator {
 	 * Update the areZombies states and positions of all entities (assume Brownian
 	 * motion).
 	 *
-	 * The rules for an update are: Each entity should move by a random value
-	 * between RANDOM_DELTA_MIN and RANDOM_DELTA_MAX in the x coordinate and between
-	 * RANDOM_DELTA_MIN and RANDOM_DELTA_MAX in the Y coordinate.
+	 * The rules for an update are:
+	 * 
+	 * Each entity should move by a random value between -RANDOM_DELTA_HALF_RANGE 
+	 * and +RANDOM_DELTA_HALF_RANGE in both the x and the y coordinates.
 	 * 
 	 * Entities should not be able to leave the screen. x and y coordinates should
 	 * be kept between [0-1.0]
