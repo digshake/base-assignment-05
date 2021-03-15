@@ -13,11 +13,8 @@ import support.cse131.DialogBoxes;
  */
 public class DrawEntitiesDebugApp {
 	private static void drawCrosshairs(double[][] positions) {
-		double prevPenRadius = StdDraw.getPenRadius();
-		StdDraw.setPenRadius();
 		StdDraw.setPenColor(0, 109, 219);
 		Crosshairs.drawMultipleCrosshairs(positions, 0.1);
-		StdDraw.setPenRadius(prevPenRadius);
 		StdDraw.show();
 	}
 
