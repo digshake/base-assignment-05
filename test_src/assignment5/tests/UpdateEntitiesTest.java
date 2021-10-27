@@ -513,7 +513,8 @@ public class UpdateEntitiesTest {
 	 */
 	@Test
 	public void testRandomRange() {
-		int n = 100;
+		// try on 300 entities for randoms in the range (-delta, -delta/2), (-delta/2, 0), (0, delta/2), and (delta/2, delta)
+		int n = 300;
 		double[][] positions = new double[n][2];
 		boolean[] areZombies = new boolean[n];
 		for (int i = 0; i < positions.length; i++) {
@@ -521,16 +522,29 @@ public class UpdateEntitiesTest {
 			positions[i][1] = Math.random();
 			areZombies[i] = Math.random() < 0.5;
 		}
+		
+		// copy original positions
 		double[][] copyPosition = copy2DArray(positions);
 		ZombieSimulator.updateEntities(areZombies, positions);
-		int positiveDisplacements = 0; // if all are positive, fail
-		for (int i = 0; i < n; i++) {
-			if (positions[i][0]-copyPosition[i][0] >= 0 && positions[i][1]-copyPosition[i][1] >= 0) {
-				positiveDisplacements++;
+		// check all x coordinates, then all y coordinates (in case their calculation is different)
+		for (int c = 0; c <= 1; c++) {
+			boolean upperPositiveThreshold = false;  // (delta/2, delta)
+			boolean lowerPositiveThreshold = false;  // (0, delta/2)
+			boolean upperNegativeThreshold = false;  // (-delta/2, 0)
+			boolean lowerNegativeThreshold = false;  // (-delta, -delta/2)
+			double delta = ZombieSimulator.RANDOM_DELTA_HALF_RANGE;
+			for (int i = 0; i < n; i++) {
+				double change = positions[i][c] - copyPosition[i][c];
+				assertTrue("Randomly generated movement was too large", Math.abs(change) <= delta);
+				upperPositiveThreshold |= (change < delta && change > delta/2);
+				lowerPositiveThreshold |= (change > 0 && change < delta/2);
+				upperNegativeThreshold |= (change < 0 && change > -delta/2);
+				lowerNegativeThreshold |= (change < -delta/2 && change > -delta);
 			}
+			assertTrue("All of your randomly generated movement was positive - make sure the range is (-delta, delta).", upperNegativeThreshold || lowerNegativeThreshold);
+			assertTrue("All of your randomly generated movement was negative - make sure the range is (-delta, delta).", upperPositiveThreshold || lowerPositiveThreshold);
+			assertTrue("Random movement must fall fully within the range (-delta, delta)", upperPositiveThreshold && lowerPositiveThreshold && upperNegativeThreshold && lowerNegativeThreshold);
 		}
-		assertTrue("All of your randomly generated movement was positive - make sure the range is (-delta, delta).", positiveDisplacements != n);
-
 	}
 	
 	/**
@@ -538,7 +552,7 @@ public class UpdateEntitiesTest {
 	 * and random Y at the start and applying them to each entity.
 	 */
 	@Test
-	public void testUniqueEntityMovement() {
+	public void testEntityMovementIsUnique() {
 		int n = 50;
 		double[][] positions = new double[n][2];
 		boolean[] areZombies = new boolean[n];
@@ -568,7 +582,7 @@ public class UpdateEntitiesTest {
 			}
 		}
 		// descriptive error message
-		assertTrue("Each entity is moving by the same amount - make sure to re-generate random displacements for each entity.", (sameX != n-1) && (sameY != n-1));
+		assertTrue("Each entity is moving by the same amount. You must re-generate random displacements for each entity.", (sameX != n-1) && (sameY != n-1));
 	}
 	
 }
