@@ -518,8 +518,9 @@ public class UpdateEntitiesTest {
 		double[][] positions = new double[n][2];
 		boolean[] areZombies = new boolean[n];
 		for (int i = 0; i < positions.length; i++) {
-			positions[i][0] = Math.random();
-			positions[i][1] = Math.random();
+			// generates positions with padding within the boundary, so that boundary conditions do not affect test results
+			positions[i][0] = Math.random()*(1-2*ZombieSimulator.RANDOM_DELTA_HALF_RANGE) + ZombieSimulator.RANDOM_DELTA_HALF_RANGE;
+			positions[i][1] = Math.random()*(1-2*ZombieSimulator.RANDOM_DELTA_HALF_RANGE) + ZombieSimulator.RANDOM_DELTA_HALF_RANGE;
 			areZombies[i] = Math.random() < 0.5;
 		}
 		
