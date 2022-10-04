@@ -4,15 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import assignment5.ZombieSimulator;
-import support.cse131.ArgsProcessor;
-import zombies.ZombieSimulationFiles;
 
 /**
  * Methods that test the readEntities() method
@@ -29,11 +29,12 @@ public class ReadEntitiesTest {
 		}
 
 		public static ZombieArrays read(String filename) throws FileNotFoundException {
-			ArgsProcessor ap = ZombieSimulationFiles.createArgsProcessorFromFile(new String[] { filename });
-			int N = ap.nextInt();
+			File f = new File("zombieSims/" + filename);
+			Scanner in = new Scanner(f);
+			int N = in.nextInt();
 			boolean[] areZombies = new boolean[N];
 			double[][] positions = new double[N][2];
-			ZombieSimulator.readEntities(ap, areZombies, positions);
+			ZombieSimulator.readEntities(in, areZombies, positions);
 			return new ZombieArrays(areZombies, positions);
 		}
 	}

@@ -1,11 +1,14 @@
 package assignment5;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Objects;
+import java.util.Scanner;
+
+import javax.swing.JFileChooser;
 
 import edu.princeton.cs.introcs.StdDraw;
-import support.cse131.ArgsProcessor;
-import zombies.ZombieSimulationFiles;
 
 /**
  * A Zombie Simulator!
@@ -27,7 +30,7 @@ public class ZombieSimulator {
 	/**
 	 * Read entities from a file.
 	 */
-	public static void readEntities(ArgsProcessor ap, boolean[] areZombies, double[][] positions) {
+	public static void readEntities(Scanner in, boolean[] areZombies, double[][] positions) {
 
 		// TODO: Implement this function 
 		// (you can probably adjust code from Assignment 4)
@@ -119,7 +122,7 @@ public class ZombieSimulator {
 	/**
 	 * Run the zombie simulation.
 	 */
-	private static void runSimulation(ArgsProcessor ap) {
+	private static void runSimulation(Scanner in) {
 		StdDraw.enableDoubleBuffering(); // reduce unpleasant drawing artifacts, speed things up
 
 		// TODO: Uncomment and fix the code below.
@@ -138,9 +141,12 @@ public class ZombieSimulator {
 		
 	}
 
-	public static void main(String[] args) {
-		ArgsProcessor ap = ZombieSimulationFiles.createArgsProcessorFromFile(args);
-		runSimulation(ap);
+	public static void main(String[] args) throws FileNotFoundException {
+		JFileChooser chooser = new JFileChooser("zombieSims");
+		chooser.showOpenDialog(null);
+		File f = new File(chooser.getSelectedFile().getPath());
+		Scanner in = new Scanner(f); //making Scanner with a File
+		runSimulation(in);
 	}
 
 }
